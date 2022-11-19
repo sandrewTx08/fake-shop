@@ -14,7 +14,6 @@ body {
   background-color: lightslategray;
 }
 
-/* HEADER */
 #header {
   background-color: slategray;
   color: white;
@@ -50,12 +49,10 @@ body {
   padding: 1em;
 }
 
-/* NAVBAR */
 #navbar svg {
   margin-right: 1em;
 }
 
-/* CARD */
 .products {
   display: flex;
   flex-wrap: wrap;
@@ -63,6 +60,7 @@ body {
   font-size: small;
 }
 
+/* Small */
 .product-item-sm {
   margin: 1em auto 0 1em;
   border: 1px solid;
@@ -115,7 +113,7 @@ body {
   cursor: pointer;
 }
 
-/* Product Item Menu Large */
+/* Large */
 .product-item-menu-lg {
   display: flex;
   margin: 1em;
