@@ -23,4 +23,8 @@ export namespace Fetch {
   export function products() {
     return axios.get<Product.RootObject[]>("products");
   }
+
+  export function products_id(id: Product.RootObject["id"]) {
+    return axios.get<Product.RootObject>("products/" + id);
+  }
 }

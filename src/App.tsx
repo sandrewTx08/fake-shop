@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Fetch, Product } from "./services/fetch";
 import { SlBag, SlBasket, SlHandbag, SlUser } from "react-icons/sl";
+import { Route, Routes, Link, useParams } from "react-router-dom";
 import "./App.css";
 
 function Navbar() {
@@ -47,15 +48,19 @@ function Header() {
   );
 }
 
-function CardGrid(props: { product: Product.RootObject }) {
+function ProductCard(props: { product: Product.RootObject }) {
   return (
     <div className="card">
       <div className="card-img">
-        <img src={props.product.image} alt="" />
+        <Link to={"/product/" + props.product.id}>
+          <img src={props.product.image} alt="" />
+        </Link>
       </div>
 
       <div className="card-body">
-        <div className="card-title">{props.product.title}</div>
+        <div className="card-title">
+          <Link to={"/product/" + props.product.id}>{props.product.title}</Link>
+        </div>
 
         <hr />
 
@@ -73,6 +78,19 @@ function CardGrid(props: { product: Product.RootObject }) {
   );
 }
 
+function ProductMenu() {
+  const { id } = useParams<{ id: string }>(),
+    [product, productSet] = useState<Product.RootObject>();
+
+  useEffect(() => {
+    Fetch.products_id(Number(id)).then((res) => {
+      productSet(res.data);
+    });
+  }, []);
+
+  return <div>{JSON.stringify(product)}</div>;
+}
+
 function App() {
   const [products, productsSet] = useState<Product.RootObject[]>();
 
@@ -83,15 +101,24 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <Fragment>
       <Header />
 
-      <div className="card-products">
-        {products?.map((product) => (
-          <CardGrid product={product} />
-        ))}
-      </div>
-    </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="card-products">
+              {products?.map((product) => (
+                <ProductCard product={product} />
+              ))}
+            </div>
+          }
+        />
+
+        <Route path="/product/:id" element={<ProductMenu />} />
+      </Routes>
+    </Fragment>
   );
 }
 
