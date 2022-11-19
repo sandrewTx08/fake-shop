@@ -114,3 +114,32 @@ body {
   border: 0;
   cursor: pointer;
 }
+
+/* Product Item Menu */
+.product-item-menu {
+  display: flex;
+  margin: 1em;
+  border: 1em solid none;
+  border-radius: 0.5em;
+  height: 400px;
+  background-color: white;
+}
+
+.product-item-menu img {
+  display: block;
+  height: auto;
+  margin: 1em;
+  padding: 2em;
+  background-color: white;
+  border: 1em solid none;
+  border-radius: 1em;
+}
+
+.product-item-menu-box {
+  padding: 1em;
+}
+
+.product-item-menu-title {
+  font-size: larger;
+  margin-bottom: 1em;
+}

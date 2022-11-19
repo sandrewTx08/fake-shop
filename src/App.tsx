@@ -88,7 +88,21 @@ function ProductMenu() {
     });
   }, []);
 
-  return <div>{JSON.stringify(product)}</div>;
+  return (
+    <div className="product-item-menu">
+      <img src={product?.image} alt="" />
+
+      <div className="product-item-menu-box">
+        <div className="product-item-menu-title">{product?.title}</div>
+
+        <div className="product-item-menu-description">
+          {product?.description}
+        </div>
+
+        <div className="product-item-menu-bootom"></div>
+      </div>
+    </div>
+  );
 }
 
 function App() {
