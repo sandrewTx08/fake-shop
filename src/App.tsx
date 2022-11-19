@@ -48,17 +48,17 @@ function Header() {
   );
 }
 
-function ProductCard(props: { product: Product.RootObject }) {
+function ProductItemMenuSmall(props: { product: Product.RootObject }) {
   return (
-    <div className="card">
-      <div className="card-img">
+    <div className="product-item-sm">
+      <div className="product-item-sm-img">
         <Link to={"/product/" + props.product.id}>
           <img src={props.product.image} alt="" />
         </Link>
       </div>
 
-      <div className="card-body">
-        <div className="card-title">
+      <div className="product-item-sm-body">
+        <div className="product-item-sm-title">
           <Link to={"/product/" + props.product.id}>{props.product.title}</Link>
         </div>
 
@@ -71,14 +71,14 @@ function ProductCard(props: { product: Product.RootObject }) {
         </div>
       </div>
 
-      <div className="card-footer">
+      <div className="product-item-sm-footer">
         <button>Add to Cart</button>
       </div>
     </div>
   );
 }
 
-function ProductMenu() {
+function ProductItemMenuLarge() {
   const { id } = useParams<{ id: string }>(),
     [product, productSet] = useState<Product.RootObject>();
 
@@ -89,17 +89,17 @@ function ProductMenu() {
   }, []);
 
   return (
-    <div className="product-item-menu">
+    <div className="product-item-menu-lg">
       <img src={product?.image} alt="" />
 
-      <div className="product-item-menu-box">
-        <div className="product-item-menu-title">{product?.title}</div>
+      <div className="product-item-menu-lg-box">
+        <div className="product-item-menu-lg-title">{product?.title}</div>
 
-        <div className="product-item-menu-description">
+        <div className="product-item-menu-lg-description">
           {product?.description}
         </div>
 
-        <div className="product-item-menu-bootom"></div>
+        <div className="product-item-menu-lg-bootom"></div>
       </div>
     </div>
   );
@@ -122,15 +122,15 @@ function App() {
         <Route
           path="/"
           element={
-            <div className="card-products">
+            <div className="products">
               {products?.map((product) => (
-                <ProductCard product={product} />
+                <ProductItemMenuSmall product={product} />
               ))}
             </div>
           }
         />
 
-        <Route path="/product/:id" element={<ProductMenu />} />
+        <Route path="/product/:id" element={<ProductItemMenuLarge />} />
       </Routes>
     </Fragment>
   );
