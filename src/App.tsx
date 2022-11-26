@@ -149,30 +149,38 @@ function ProductItemMenuLarge() {
 }
 
 function CartMenu({ cart }: { cart: Cart.RootObject }) {
-  const [cartProduts, cartProdutsSet] = useState<Product.RootObject[]>();
+  const [cartProducts, cartProdutsSet] =
+    useState<(Product.RootObject & Cart.Product)[]>();
 
   useEffect(() => {
     Promise.all(
-      cart.products.map(({ productId }) =>
-        Fetch.products_id(productId).then(({ data }) => data)
+      cart.products.map((product) =>
+        Fetch.products_id(product.productId).then(({ data }) => ({
+          ...data,
+          ...product,
+        }))
       )
     ).then(cartProdutsSet);
   }, []);
 
   return (
     <Fragment>
-      {cartProduts ? (
-        cartProduts.map((cartProdut) => (
+      {cartProducts ? (
+        cartProducts.map((cartProduct) => (
           <div className="cart-item">
-            <img src={cartProdut.image} alt="" />
+            <img src={cartProduct.image} alt="" />
 
             <div className="cart-item-box">
               <div className="cart-item-title">
-                <b>{cartProdut.title}</b>
+                <b>{cartProduct.title}</b>
               </div>
 
+              <div>Price: {cartProduct.price}$</div>
+
+              <div>Available: {cartProduct.quantity}</div>
+
               <div className="cart-item-rate">
-                {cartProdut.rating.rate} / {cartProdut.rating.count}
+                {cartProduct.rating.rate} / {cartProduct.rating.count}
               </div>
             </div>
           </div>
