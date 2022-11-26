@@ -148,7 +148,7 @@ function ProductItemMenuLarge() {
   );
 }
 
-function CartItem({ cart }: { cart: Cart.RootObject }) {
+function CartMenu({ cart }: { cart: Cart.RootObject }) {
   const [cartProduts, cartProdutsSet] = useState<Product.RootObject[]>();
 
   useEffect(() => {
@@ -210,7 +210,7 @@ function App() {
           path="/cart"
           element={
             <div className="cart">
-              {cart ? <CartItem cart={cart} /> : <h1>No item added to cart</h1>}
+              {cart ? <CartMenu cart={cart} /> : <h1>No item added to cart</h1>}
             </div>
           }
         />
