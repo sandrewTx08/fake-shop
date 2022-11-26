@@ -177,3 +177,27 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.cart-item img {
+  height: 100%;
+  margin: 1em;
+  max-width: 100px;
+  background-color: white;
+}
+
+.cart-item {
+  display: flex;
+  margin: 1em;
+  background-color: white;
+  border: 0 solid;
+  border-radius: 6px;
+}
+
+.cart-item-box {
+  border: 1em solid none;
+  border-left: 2px solid black;
+}
+
+.cart-item-box div {
+  margin: 1em;
+}

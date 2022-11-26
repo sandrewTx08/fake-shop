@@ -165,6 +165,16 @@ function CartMenu({ cart }: { cart: Cart.RootObject }) {
         cartProduts.map((cartProdut) => (
           <div className="cart-item">
             <img src={cartProdut.image} alt="" />
+
+            <div className="cart-item-box">
+              <div className="cart-item-title">
+                <b>{cartProdut.title}</b>
+              </div>
+
+              <div className="cart-item-rate">
+                {cartProdut.rating.rate} / {cartProdut.rating.count}
+              </div>
+            </div>
           </div>
         ))
       ) : (
