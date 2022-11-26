@@ -177,7 +177,7 @@ function CartMenu({ cart }: { cart: Cart.RootObject }) {
 
               <div>Price: {cartProduct.price}$</div>
 
-              <div>Available: {cartProduct.quantity}</div>
+              <div>Quantity: {cartProduct.quantity}</div>
 
               <div className="cart-item-rate">
                 {cartProduct.rating.rate} / {cartProduct.rating.count}
