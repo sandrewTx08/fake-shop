@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Fetch, Product } from "./services/fetch";
 import { SlBag, SlBasket, SlHandbag, SlUser } from "react-icons/sl";
+import { IoMdAdd, IoMdRemove, IoIosCart } from "react-icons/io";
 import { Route, Routes, Link, useParams } from "react-router-dom";
 import "./App.css";
 
@@ -80,7 +81,20 @@ function ProductItemMenuSmall(props: { product: Product.RootObject }) {
 
 function ProductItemMenuLarge() {
   const { id } = useParams<{ id: string }>(),
-    [product, productSet] = useState<Product.RootObject>();
+    [product, productSet] = useState<Product.RootObject>(),
+    [quantity, quantitySet] = useState<number>(1);
+
+  function quantitySub() {
+    quantitySet(quantity - 1);
+  }
+
+  function quantityAdd() {
+    quantitySet(quantity + 1);
+  }
+
+  function quantityInputOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    quantitySet(Number(event.target.value));
+  }
 
   useEffect(() => {
     Fetch.products_id(Number(id)).then((res) => {
@@ -99,7 +113,34 @@ function ProductItemMenuLarge() {
           {product?.description}
         </div>
 
-        <div className="product-item-menu-lg-bootom"></div>
+        <div className="product-item-menu-lg-bottom">
+          <button className="product-item-menu-lg-cart">
+            <IoIosCart /> Add to Cart
+          </button>
+
+          <div className="product-item-menu-lg-qt">
+            <button
+              className="product-item-menu-lg-qt-add"
+              onClick={quantityAdd}
+            >
+              <IoMdAdd />
+            </button>
+
+            <input
+              type="number"
+              className="product-item-menu-lg-qt-input"
+              value={quantity}
+              onChange={quantityInputOnChange}
+            />
+
+            <button
+              className="product-item-menu-lg-qt-remove"
+              onClick={quantitySub}
+            >
+              <IoMdRemove />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
