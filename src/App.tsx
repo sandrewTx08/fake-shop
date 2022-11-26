@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Fetch, Product } from "./services/fetch";
+import { Cart, Fetch, Product } from "./services/fetch";
 import { SlBag, SlBasket, SlHandbag, SlUser } from "react-icons/sl";
 import { IoMdAdd, IoMdRemove, IoIosCart } from "react-icons/io";
 import { Route, Routes, Link, useParams } from "react-router-dom";
@@ -17,17 +17,17 @@ function Navbar() {
         </li>
 
         <li>
-          <a href="">
+          <Link to="/">
             <SlBag />
             Products
-          </a>
+          </Link>
         </li>
 
         <li>
-          <a href="">
+          <Link to="/cart">
             <SlBasket />
             Cart
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>
@@ -38,10 +38,10 @@ function Header() {
   return (
     <header id="header">
       <div className="brand">
-        <a href="">
+        <Link to="/">
           FakeShop
           <SlHandbag />
-        </a>
+        </Link>
       </div>
 
       <Navbar />
@@ -49,26 +49,26 @@ function Header() {
   );
 }
 
-function ProductItemMenuSmall(props: { product: Product.RootObject }) {
+function ProductItemMenuSmall({ product }: { product: Product.RootObject }) {
   return (
     <div className="product-item-sm">
       <div className="product-item-sm-img">
-        <Link to={"/product/" + props.product.id}>
-          <img src={props.product.image} alt="" />
+        <Link to={"product/" + product.id}>
+          <img src={product.image} alt="" />
         </Link>
       </div>
 
       <div className="product-item-sm-body">
         <div className="product-item-sm-title">
-          <Link to={"/product/" + props.product.id}>{props.product.title}</Link>
+          <Link to={"product/" + product.id}>{product.title}</Link>
         </div>
 
         <hr />
 
-        <div>Price: {props.product.price}$</div>
+        <div>Price: {product.price}$</div>
 
         <div>
-          Rating: {props.product.rating.count}/{props.product.rating.rate}
+          Rating: {product.rating.count}/{product.rating.rate}
         </div>
       </div>
 
@@ -92,13 +92,15 @@ function ProductItemMenuLarge() {
     quantitySet(quantity + 1);
   }
 
-  function quantityInputOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    quantitySet(Number(event.target.value));
+  function quantityInputOnChange({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>) {
+    quantitySet(Number(value));
   }
 
   useEffect(() => {
-    Fetch.products_id(Number(id)).then((res) => {
-      productSet(res.data);
+    Fetch.products_id(Number(id)).then(({ data }) => {
+      productSet(data);
     });
   }, []);
 
@@ -146,12 +148,43 @@ function ProductItemMenuLarge() {
   );
 }
 
-function App() {
-  const [products, productsSet] = useState<Product.RootObject[]>();
+function CartItem({ cart }: { cart: Cart.RootObject }) {
+  const [cartProduts, cartProdutsSet] = useState<Product.RootObject[]>();
 
   useEffect(() => {
-    Fetch.products().then((res) => {
-      productsSet(res.data);
+    Promise.all(
+      cart.products.map(({ productId }) =>
+        Fetch.products_id(productId).then(({ data }) => data)
+      )
+    ).then(cartProdutsSet);
+  }, []);
+
+  return (
+    <Fragment>
+      {cartProduts ? (
+        cartProduts.map((cartProdut) => (
+          <div className="cart-item">
+            <img src={cartProdut.image} alt="" />
+          </div>
+        ))
+      ) : (
+        <Fragment />
+      )}
+    </Fragment>
+  );
+}
+
+function App() {
+  const [products, productsSet] = useState<Product.RootObject[]>(),
+    [cart, cartSet] = useState<Cart.RootObject>();
+
+  useEffect(() => {
+    Fetch.products().then(({ data }) => {
+      productsSet(data);
+    });
+
+    Fetch.cart_userId(1).then(({ data }) => {
+      cartSet(data);
     });
   }, []);
 
@@ -172,6 +205,15 @@ function App() {
         />
 
         <Route path="/product/:id" element={<ProductItemMenuLarge />} />
+
+        <Route
+          path="/cart"
+          element={
+            <div className="cart">
+              {cart ? <CartItem cart={cart} /> : <h1>No item added to cart</h1>}
+            </div>
+          }
+        />
       </Routes>
     </Fragment>
   );

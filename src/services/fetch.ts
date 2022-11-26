@@ -17,6 +17,21 @@ export namespace Product {
   }
 }
 
+export namespace Cart {
+  export interface Product {
+    productId: number;
+    quantity: number;
+  }
+
+  export interface RootObject {
+    id: number;
+    userId: number;
+    date: Date;
+    products: Product[];
+    __v: number;
+  }
+}
+
 export namespace Fetch {
   axios.defaults.baseURL = "https://fakestoreapi.com";
 
@@ -26,5 +41,9 @@ export namespace Fetch {
 
   export function products_id(id: Product.RootObject["id"]) {
     return axios.get<Product.RootObject>("products/" + id);
+  }
+
+  export function cart_userId(id: Cart.RootObject["userId"]) {
+    return axios.get<Cart.RootObject>("carts/" + id);
   }
 }

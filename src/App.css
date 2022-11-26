@@ -171,3 +171,9 @@ body {
 .product-item-menu-lg-qt-remove {
   background-color: lightcoral;
 }
+
+/* Cart */
+.cart {
+  display: flex;
+  flex-direction: column;
+}
